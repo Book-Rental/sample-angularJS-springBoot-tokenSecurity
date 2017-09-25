@@ -25,9 +25,9 @@ var BookListController = function($scope, $http, $location, BookService, $routeP
       ],
       data: bookList,
       columns: [
-        {data: 'title'},
-        {data: 'author'},
-        {data: 'publicationDate'}
+        {data: 'title', defaultContent: ''},
+        {data: 'author', defaultContent: ''},
+        {data: 'publicationDate', defaultContent: ''}
       ]
     });
     initDatatableEvents(bookTable);

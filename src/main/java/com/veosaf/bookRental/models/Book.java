@@ -13,8 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "BOOK")
@@ -36,7 +34,6 @@ public class Book implements java.io.Serializable {
 	@Column(name = "AUTHOR", length = 45)
 	private String author;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "PUBLICATION_DATE", length = 0)
 	private Date publicationDate;
 
