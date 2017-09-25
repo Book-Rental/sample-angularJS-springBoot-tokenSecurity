@@ -41,7 +41,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
 	private void addBooks() {
 		Book book = new Book();
-		book.setTitle("Java Book");
+		book.setTitle(null);
 		book.setPublicationDate(new GregorianCalendar(2017, 0, 31).getTime());
 		book.setAuthor("Simon");
 		bookRepository.save(book);

@@ -1,4 +1,4 @@
-package com.veosaf.bookRental.dtoMappersImpl;
+package com.veosaf.bookRental.dtoMappers.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,19 @@ public class BookDtoMapperImpl implements BookDtoMapper {
 			books.stream().forEach(book -> booksDto.add(toBookDto(book)));
 		}
 		return booksDto;
+	}
+
+	@Override
+	public Book toBook(BookDto bookDto) {
+		if (bookDto == null) {
+			return null;
+		}
+		Book book = new Book();
+		book.setTitle(bookDto.getTitle());
+		book.setAuthor(bookDto.getAuthor());
+		book.setId(bookDto.getId());
+		book.setPublicationDate(bookDto.getPublicationDate());
+		return book;
 	}
 
 }

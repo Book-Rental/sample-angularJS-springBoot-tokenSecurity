@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
 import com.veosaf.bookRental.dto.BookDto;
+import com.veosaf.bookRental.models.Book;
 import com.veosaf.bookRental.resources.BookResource;
 import com.veosaf.bookRental.services.BookService;
 
@@ -24,6 +25,12 @@ public class BookResourceImpl implements BookResource {
 	public Response findById(Long id) {
 		BookDto book = bookBusinessService.findById(id);
 		return Response.ok(book).build();
+	}
+
+	@Override
+	public Response save(BookDto bookDto) {
+		Book book = bookBusinessService.save(bookDto);
+		return Response.ok(book.getId()).build();
 	}
 
 }

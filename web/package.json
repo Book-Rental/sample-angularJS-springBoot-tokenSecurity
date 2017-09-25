@@ -42,5 +42,8 @@
     "main-bower-files": "~2.13.1",
     "rimraf": "~2.5.4",
     "wiredep": "~4.0.0"
+  },
+  "dependencies": {
+    "gulp-merge": "^0.1.1"
   }
 }

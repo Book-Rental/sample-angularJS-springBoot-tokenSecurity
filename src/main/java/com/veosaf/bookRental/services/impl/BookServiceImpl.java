@@ -43,4 +43,9 @@ public class BookServiceImpl implements BookService {
 		return bookDtoMapper.toBookDto(bookRepository.findById(id));
 	}
 
+	@Override
+	public Book save(BookDto bookDto) {
+		return (bookRepository.save(bookDtoMapper.toBook(bookDto)));
+	}
+
 }

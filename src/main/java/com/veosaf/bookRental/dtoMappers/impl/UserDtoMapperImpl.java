@@ -1,4 +1,4 @@
-package com.veosaf.bookRental.dtoMappersImpl;
+package com.veosaf.bookRental.dtoMappers.impl;
 
 import org.springframework.stereotype.Service;
 

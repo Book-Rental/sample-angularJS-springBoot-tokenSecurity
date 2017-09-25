@@ -1,6 +1,6 @@
-app.controller('MainController', ['$scope', '$cookieStore', //
-  'UserService', '$location', '$rootScope', '$localStorage', //
-  function($scope, $cookieStore, UserService, $location, $rootScope, $localStorage) {
+(function() {
+
+  var IndexController = function($scope, $cookieStore, UserService, $location, $rootScope, $localStorage) {
 
     $scope.isAuthenticated = function() {
       var userToken = $localStorage.userToken;
@@ -35,4 +35,11 @@ app.controller('MainController', ['$scope', '$cookieStore', //
       console.log('hhhh');
     };
 
-  }]);
+  };
+ 
+  IndexController.$inject = ['$scope', '$cookieStore', //
+  'UserService', '$location', '$rootScope', '$localStorage'];
+
+  angular.module('app').controller('IndexController', IndexController);
+
+}());

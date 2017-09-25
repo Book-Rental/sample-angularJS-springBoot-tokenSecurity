@@ -47,8 +47,8 @@ $routeProvider, $locationProvider, $httpProvider) {
   $locationProvider.hashPrefix('');
 }]);
 
-app.run(['$rootScope', '$location', '$cookieStore', 'UserService', '$localStorage', function($rootScope,
-$location, $cookieStore, UserService, $localStorage) {
+app.run(['$rootScope', '$location', '$cookieStore', '$localStorage', function($rootScope,
+$location, $cookieStore, $localStorage) {
   /* Reset error when a new view is loaded */
   $rootScope.$on('$viewContentLoaded', function() {
     delete $rootScope.error;

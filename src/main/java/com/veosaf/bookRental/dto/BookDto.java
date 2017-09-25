@@ -1,8 +1,14 @@
 package com.veosaf.bookRental.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BookDto {
+public class BookDto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 

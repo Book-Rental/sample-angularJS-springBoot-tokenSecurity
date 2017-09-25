@@ -1,17 +1,95 @@
 <div ng-controller="BookDetailsController as BookDetailsCtrl">
 
-    <div class="panel panel-primary">
-        <div class="panel-heading">Book#{{book.id}}</div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-6 col-md-3">Title</div>
-                <div class="col-6 col-md-3">{{book.title}}</div>
-                <div class="col-6 col-md-3">Author</div>
-                <div class="col-6 col-md-3">{{book.author}}</div>
+    <div ng-if="mode=='edit'">
+        <h4>Edit Book ID#{{book.id}}</h4>
+    </div>
+
+    <div ng-if="mode=='new'">
+        <h4>New Book</h4>
+    </div>
+
+    <div ng-if="mode=='view'">
+        <h4>View Book ID#{{book.id}}</h4>
+    </div>
+
+    <hr>
+
+    <form ng-if="mode=='edit' || mode=='new'" ng-submit="saveBook()">
+        <div class="row">
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="title">Title</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="title" placeholder="Enter title" ng-model="book.title" ng-required="true" autocomplete="off">
+                </div>
             </div>
-            <div class="row">
-                <div class="col-6 col-md-3">Publication Date</div>
-                <div class="col-6 col-md-3">{{book.publicationDate}}</div>
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="author">Author</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="author" placeholder="Enter author" ng-model="book.author" autocomplete="off"
+                        ng-required="true">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="pubDate">Publication Date</label>
+                <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    <div>
+                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate" placeholder="Enter Publication Date"
+                            autocomplete="off" ng-required="true">
+                    </div>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-12">
+                <div class="pull-right">
+                    <button class="btn btn-primary " type="button" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary " type="button" ng-click="reset()"  Style="padding-right:10px">Reset</button>
+                    <button class="btn btn-primary " type="submit" Style="padding-right:10px">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div ng-if="mode =='view'">
+        <div class="row">
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="title">Title</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="title" placeholder="Enter title" ng-model="book.title" autocomplete="off" disabled>
+                </div>
+            </div>
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="author">Author</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="author" placeholder="Enter author" ng-model="book.author" autocomplete="off"
+                        disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col col-md-6">
+                <label class="control-label col-md-4" for="pubDate">Publication Date</label>
+                <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    <div>
+                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate" placeholder="Enter Publication Date"
+                            autocomplete="off" disabled>
+                    </div>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-12">
+                <div class="pull-right">
+                    <button class="btn btn-primary " Style="margin-right:10px" ng-click="edit()">Edit</button>
+                </div>
             </div>
         </div>
     </div>

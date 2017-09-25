@@ -11,9 +11,14 @@ $http) {
     return $http.get(propertiesConstant.API_URL + 'rest/book/' + id);
   };
 
+  var save = function(book){
+    return $http.post(propertiesConstant.API_URL + 'rest/book/', book);
+  };
+
   return {
     get: get,
-    getById: getById
+    getById: getById,
+    save: save
   };
 
 }]);

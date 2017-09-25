@@ -1,4 +1,4 @@
-package com.veosaf.bookRental;
+package com.veosaf.bookRental.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;

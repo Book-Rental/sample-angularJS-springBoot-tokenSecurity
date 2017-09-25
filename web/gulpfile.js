@@ -30,6 +30,7 @@ var order = require('gulp-order');
 var concatCss = require('gulp-concat-css');
 var flatten = require('gulp-flatten');
 var jsValidate = require('gulp-jsvalidate');
+var gulpMerge = require('gulp-merge');
 
 var swallowError = function(err) {
   gutil.log(err.toString());
@@ -63,24 +64,31 @@ gulp.task('browser-sync', function() {
   browserSync.reload();
 });
 
-gulp.task('build-less', function() {
-  var filterLess = gulpFilter('**/*.less');
-  del.sync('../src/main/webapp/dist/css/test.css', {force: true});
-  return gulp.src(mainBowerFiles())
-    .pipe(filterLess)
-    .pipe(less())
-    .pipe(concat('test.css'))
-    .pipe(gulp.dest("../src/main/webapp/dist/css"));
+gulp.task('build-bundle-css', function() {
+  del.sync('../src/main/webapp/dist/css/bundle.min.css', {force: true});
+  var cssStream = gulp.src('./app/**/*.css');
+  var lessStream = gulp.src('./app/**/*.less')
+    .pipe(less());
+  var scssStream = gulp.src('./app/**/*.scss')
+    .pipe(sass());
+  var mergedStream = gulpMerge(lessStream, scssStream);
+  mergedStream = gulpMerge(mergedStream, cssStream);
 
+  return mergedStream.pipe(concat('bundle.min.css'))
+    .pipe(gulp.dest("../src/main/webapp/dist/css"));
 });
 
-gulp.task('build-sass', function() {
-  var filterScss = gulpFilter('**/*.scss');
-  del.sync('../src/main/webapp/dist/css/test.css', {force: true});
-  return gulp.src(mainBowerFiles('**/*.scss'))
-    //.pipe(filterScss)
-    .pipe(sass())
-    .pipe(concat('test.css'))
+gulp.task('build-vendor-css', function() {
+  del.sync('../src/main/webapp/dist/css/vendor.min.css', {force: true});
+  var cssStream = gulp.src(mainBowerFiles('**/*.css'));
+  var lessStream = gulp.src(mainBowerFiles('**/*.less'))
+    .pipe(less());
+  var scssStream = gulp.src(mainBowerFiles('**/*.scss'))
+    .pipe(sass());
+  var mergedStream = gulpMerge(lessStream, scssStream);
+  mergedStream = gulpMerge(mergedStream, cssStream);
+
+  return mergedStream.pipe(concat('vendor.min.css'))
     .pipe(gulp.dest("../src/main/webapp/dist/css"));
 });
 
@@ -88,7 +96,7 @@ gulp.task('default', ['build-clean']);
 
 gulp.task('build-clean', function(cb) {
   runSequence('clean', ['validate', 'build-clean-js-html', 'build-clean-vendor-js',
-    'build-clean-vendor-css', 'build-fonts', 'build-images', 'build-index'], cb);
+    'build-clean-vendor-css', 'build-clean-bundle-css', 'build-fonts', 'build-images', 'build-index'], cb);
 });
 
 gulp.task('build-fonts', function() {
@@ -126,7 +134,7 @@ gulp.task('build-clean-js-html', function(cb) {
 gulp.task('build-js-html', function() {
   return gulp.src('./app/**/*.js')
     .pipe(sourcemaps.init())
-    .pipe(order(['main/**.js', 'constants/**.js', 'services/**.js']))
+    .pipe(order(['index.js', 'indexController.js', 'constants/**.js', 'services/**.js']))
     //.pipe(embedTemplates())
     .pipe(addStream.obj(prepareTemplates()))
     .pipe(concat('bundle.min.js'))
@@ -146,13 +154,18 @@ gulp.task('build-vendor-js', function() {
   return gulp.src(mainBowerFiles(), {base: './bower_components'})
     .pipe(filterJS)
     .pipe(concat('vendor.min.js'))
-    .pipe(uglify().on('error', swallowError))
+    //.pipe(uglify().on('error', swallowError))
     .pipe(gulp.dest("../src/main/webapp/dist/js"));
 });
 
 gulp.task('build-clean-vendor-css', function(cb) {
   del.sync('../src/main/webapp/dist/css/vendor.min.css', {force: true});
   runSequence('build-vendor-css', cb);
+});
+
+gulp.task('build-clean-bundle-css', function(cb) {
+  del.sync('../src/main/webapp/dist/css/bundle.min.css', {force: true});
+  runSequence('build-bundle-css', cb);
 });
 
 // inject bower components
@@ -172,21 +185,18 @@ gulp.task('watch', function() {
   gulp.watch(['app/**/*.js', 'app/**/*.html', 'app/index.html'], function() {
     runSequence('validate', 'build-clean-js-html', 'build-index', 'browser-sync');
   });
-});
-
-// Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function() {
-  return gulp.src("src/main/resources/scss/*.scss")
-    .pipe(sass())
-    .pipe(gulp.dest("../src/main/webapp/dist/css"))
-    .pipe(browserSync.stream());
+  gulp.watch(['app/**/*.css', 'app/**/*.less', 'app/index.scss'], function() {
+    runSequence('build-clean-bundle-css', 'browser-sync');
+  });
 });
 
 // watch files for changes and reload
 gulp.task('serve', function(cb) {
   runSequence('build-clean', 'watch', cb);
   browserSync.init({
-    server: '../src/main/webapp/dist',
+    server: {
+      baseDir: '../src/main/webapp/dist'
+    },
     port: 3000,
     notify: false
   });

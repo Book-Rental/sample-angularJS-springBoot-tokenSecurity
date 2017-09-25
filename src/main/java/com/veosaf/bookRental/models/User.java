@@ -2,12 +2,16 @@ package com.veosaf.bookRental.models;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,6 +37,9 @@ public class User implements java.io.Serializable {
 
 	@Column(name = "EMAIL", length = 45)
 	private String email;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Rental> rentals = new HashSet<Rental>(0);
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private UserCredential userCredential;

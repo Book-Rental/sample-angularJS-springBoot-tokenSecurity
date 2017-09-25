@@ -15,4 +15,6 @@ public interface BookService {
 
 	BookDto findById(Long id);
 
+	Book save(BookDto bookDto);
+
 }
