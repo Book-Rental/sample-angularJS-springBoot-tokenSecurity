@@ -40,6 +40,7 @@
     "gulp-usemin": "~0.3.24",
     "gulp-util": "~3.0.7",
     "main-bower-files": "~2.13.1",
+    "merge-stream": "^1.0.1",
     "rimraf": "~2.5.4",
     "wiredep": "~4.0.0"
   },

@@ -13,21 +13,44 @@
   line-height:30px;
 }
 
-	/* Sticky footer styles-------------------------------------------------- */
-	html {
-	  position: relative;
-	  min-height: 100%;
-	}
-	body {
-	  /* Margin bottom by footer height */
-	  margin-bottom: 100px;
-	}
-	.absolute-footer {
-	  position: absolute;
-	  bottom: 0;
-	  width: 100%;
-	  /* Set the fixed height of the footer here */
-	  height: 30px;
-	  background-color: #f5f5f5;
-  }
+/* input required style */
+.form-group.required .control-label:after{
+  content:"*";color:red;
+}
+
+input.ng-invalid-required.ng-touched{
+	border: 1px solid red;
+}
+
+input.ng-invalid-required:focus{
+	border: 1px solid red;
+}
+
+/* Sticky footer styles-------------------------------------------------- */
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	/* Margin bottom by footer height */
+	margin-bottom: 100px;
+}
+.absolute-footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	/* Set the fixed height of the footer here */
+	height: 30px;
+	background-color: #f5f5f5;
+}
+
+/* general style */
+
+div.datepicker {
+  z-index: 10000 !important
+}
+
+.large-font{
+  font-size: large;
+}
   

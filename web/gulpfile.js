@@ -30,7 +30,7 @@ var order = require('gulp-order');
 var concatCss = require('gulp-concat-css');
 var flatten = require('gulp-flatten');
 var jsValidate = require('gulp-jsvalidate');
-var gulpMerge = require('gulp-merge');
+var mergeStream = require('merge-stream');
 
 var swallowError = function(err) {
   gutil.log(err.toString());
@@ -71,8 +71,11 @@ gulp.task('build-bundle-css', function() {
     .pipe(less());
   var scssStream = gulp.src('./app/**/*.scss')
     .pipe(sass());
-  var mergedStream = gulpMerge(lessStream, scssStream);
-  mergedStream = gulpMerge(mergedStream, cssStream);
+  cssStream = cssStream ? cssStream : new Stream();
+  lessStream = lessStream ? lessStream : new Stream();
+  scssStream = scssStream ? scssStream : new Stream();
+  var mergedStream = mergeStream(lessStream, scssStream);
+  mergedStream = mergeStream(mergedStream, cssStream);
 
   return mergedStream.pipe(concat('bundle.min.css'))
     .pipe(gulp.dest("../src/main/webapp/dist/css"));
@@ -85,8 +88,11 @@ gulp.task('build-vendor-css', function() {
     .pipe(less());
   var scssStream = gulp.src(mainBowerFiles('**/*.scss'))
     .pipe(sass());
-  var mergedStream = gulpMerge(lessStream, scssStream);
-  mergedStream = gulpMerge(mergedStream, cssStream);
+  cssStream = cssStream ? cssStream : new Stream();
+  lessStream = lessStream ? lessStream : new Stream();
+  scssStream = scssStream ? scssStream : new Stream();
+  var mergedStream = mergeStream(lessStream, scssStream);
+  mergedStream = mergeStream(mergedStream, cssStream);
 
   return mergedStream.pipe(concat('vendor.min.css'))
     .pipe(gulp.dest("../src/main/webapp/dist/css"));
@@ -108,9 +114,14 @@ gulp.task('build-fonts', function() {
 
 gulp.task('build-images', function() {
   del.sync('../src/main/webapp/dist/images', {force: true});
-  return gulp.src(mainBowerFiles('**/*.{png}'))
-    .pipe(flatten())
-    .pipe(gulp.dest('../src/main/webapp/dist/images/'));
+  var vendorImages = gulp.src(mainBowerFiles('**/*.{png}'))
+    .pipe(flatten());
+  var bundleImages = gulp.src('./app/**/*.png')
+    .pipe(flatten());
+  vendorImages = vendorImages ? vendorImages : new Stream();
+  bundleImages = bundleImages ? bundleImages : new Stream();
+  var mergedStream = mergeStream(vendorImages, bundleImages);
+  return mergedStream.pipe(gulp.dest('../src/main/webapp/dist/images/'));
 });
 
 gulp.task('build-index', function() {
@@ -134,7 +145,7 @@ gulp.task('build-clean-js-html', function(cb) {
 gulp.task('build-js-html', function() {
   return gulp.src('./app/**/*.js')
     .pipe(sourcemaps.init())
-    .pipe(order(['index.js', 'indexController.js', 'constants/**.js', 'services/**.js']))
+    .pipe(order(['index.js', 'indexController.js', 'constants/**.js', 'services/**.js', 'directives/**.js']))
     //.pipe(embedTemplates())
     .pipe(addStream.obj(prepareTemplates()))
     .pipe(concat('bundle.min.js'))

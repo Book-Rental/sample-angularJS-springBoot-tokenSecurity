@@ -1,28 +1,44 @@
 <div ng-controller="BookDetailsController as BookDetailsCtrl">
 
-    <div ng-if="mode=='edit'">
-        <h4>Edit Book ID#{{book.id}}</h4>
-    </div>
-
-    <div ng-if="mode=='new'">
-        <h4>New Book</h4>
-    </div>
-
-    <div ng-if="mode=='view'">
-        <h4>View Book ID#{{book.id}}</h4>
-    </div>
-
-    <hr>
-
     <form ng-if="mode=='edit' || mode=='new'" ng-submit="saveBook()">
+
+
         <div class="row">
-            <div class="form-group col col-md-6">
+            <div class="pull-left" ng-if="mode=='edit'">
+                <h4>Edit Book ID#{{book.id}}</h4>
+            </div>
+
+            <div class="pull-left" ng-if="mode=='new'">
+                <h4>New Book</h4>
+            </div>
+
+            <div class="pull-right">
+                <button class="btn btn-default btn-sm" type="button" ng-click="back()">
+                            <span class="fa fa-reply"></span>  Back
+                    </button>
+                <button class="btn btn-default btn-sm" Style="padding-right:10px" type="button" ng-click="cancel()"
+                ng-if="mode=='edit'">
+                        Cancel
+                </button>
+                <button class="btn btn-default btn-sm" Style="padding-right:10px" type="button" ng-click="reset()">
+                        Reset
+                </button>
+                <button class="btn btn-default btn-sm" Style="padding-right:10px" type="submit">
+                        <span class="fa fa-floppy-o"></span> Save
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="form-group required col col-md-6" ng-class="{'has-error': errors.Name }">
                 <label class="control-label col-md-4" for="title">Title</label>
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="title" placeholder="Enter title" ng-model="book.title" ng-required="true" autocomplete="off">
                 </div>
             </div>
-            <div class="form-group col col-md-6">
+            <div class="form-group required col col-md-6">
                 <label class="control-label col-md-4" for="author">Author</label>
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="author" placeholder="Enter author" ng-model="book.author" autocomplete="off"
@@ -31,7 +47,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col col-md-6">
+            <div class="form-group required col col-md-6">
                 <label class="control-label col-md-4" for="pubDate">Publication Date</label>
                 <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
                     <div>
@@ -44,30 +60,39 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="pull-right">
-                    <button class="btn btn-primary " type="button" ng-click="cancel()">Cancel</button>
-                    <button class="btn btn-primary " type="button" ng-click="reset()"  Style="padding-right:10px">Reset</button>
-                    <button class="btn btn-primary " type="submit" Style="padding-right:10px">Submit</button>
-                </div>
-            </div>
-        </div>
     </form>
 
     <div ng-if="mode =='view'">
+
+        <div class="row">
+
+            <div class="pull-left" ng-if="mode=='view'">
+                <h4>View Book ID#{{book.id}}</h4>
+            </div>
+
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-sm" type="submit" data-toggle="modal" data-target="#deleteModal">
+                        <span class="glyphicon glyphicon-remove"></span> Remove 
+                </button>
+                <button type="button" class="btn btn-default btn-sm" Style="padding-right:10px" ng-click="edit()">
+                        <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
         <div class="row">
             <div class="form-group col col-md-6">
                 <label class="control-label col-md-4" for="title">Title</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="title"  ng-model="book.title" autocomplete="off" disabled>
+                    <input type="text" class="form-control" id="title" ng-model="book.title" autocomplete="off" disabled>
                 </div>
             </div>
             <div class="form-group col col-md-6">
                 <label class="control-label col-md-4" for="author">Author</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="author"  ng-model="book.author" autocomplete="off"
-                        disabled>
+                    <input type="text" class="form-control" id="author" ng-model="book.author" autocomplete="off" disabled>
                 </div>
             </div>
         </div>
@@ -76,8 +101,7 @@
                 <label class="control-label col-md-4" for="pubDate">Publication Date</label>
                 <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
                     <div>
-                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate"
-                            autocomplete="off" disabled>
+                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate" autocomplete="off" disabled>
                     </div>
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th" />
@@ -85,12 +109,27 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="pull-right">
-                    <button class="btn btn-primary " Style="margin-right:10px" ng-click="edit()">Edit</button>
+    </div>
+
+    <!-- Delete Modal -->
+    <div id="deleteModal" class="modal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Book ID# {{book.id}}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sur to delete this book ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete()">Confirm</button>
                 </div>
             </div>
+
         </div>
     </div>
 

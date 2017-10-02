@@ -10,17 +10,20 @@
 </head>
 
 <body ng-app="app" ng-controller="IndexController as IndexCtrl">
-
 	<div ng-if="isAuthenticated()">
+		<alert-modal modal-api="IndexCtrl.alertModalApi"></alert-modal>
 		<!-- header -->
-		<div ng-include="'template/html/header.html'"></div>
+		<div ng-include="'template/html/header.html'">
+		</div>
 		<!-- /Header -->
+		<span us-spinner spinner-key="loading-spinner"></span>
 		<!-- Main -->
 		<div class="container" style="padding-top: 130px;">
+			<div ng-include="'common/error/error.html'" ng-if="error"></div>
 			<div ng-view></div>
 		</div>
 		<!--/main-->
-	
+
 
 	</div>
 	<div ng-if="!isAuthenticated()">

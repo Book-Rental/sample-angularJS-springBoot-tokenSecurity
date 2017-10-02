@@ -18,12 +18,12 @@ public interface AuthenticationResource {
 
 	@Path("/logout")
 	@GET
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	Response logout();
 
 	@Path("/current")
 	@GET
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	Response getCurrentUser();
 
 }
