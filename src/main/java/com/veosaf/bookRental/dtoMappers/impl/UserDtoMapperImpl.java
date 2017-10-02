@@ -1,5 +1,8 @@
 package com.veosaf.bookRental.dtoMappers.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.veosaf.bookRental.dto.UserDto;
@@ -10,7 +13,7 @@ import com.veosaf.bookRental.models.User;
 public class UserDtoMapperImpl implements UserDtoMapper {
 
 	@Override
-	public UserDto toUsrDto(User user) {
+	public UserDto toUserDto(User user) {
 		UserDto userDto = null;
 		if (user == null) {
 			return null;
@@ -22,6 +25,15 @@ public class UserDtoMapperImpl implements UserDtoMapper {
 		userDto.setEmail(user.getEmail());
 
 		return userDto;
+	}
+
+	@Override
+	public List<UserDto> toUsersDto(List<User> users) {
+		List<UserDto> usersDto = new ArrayList<UserDto>();
+		if (users != null) {
+			users.stream().forEach(user -> usersDto.add(toUserDto(user)));
+		}
+		return usersDto;
 	}
 
 }

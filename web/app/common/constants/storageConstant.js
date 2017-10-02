@@ -1,6 +1,10 @@
-'use strict';
+(function() {
 
-app.constant('storageConstant', {
-  USER: 'user',
-  AUTH_TOKEN: 'authToken'
-});
+  var storageConstant = {
+    USER: 'user',
+    AUTH_TOKEN: 'authToken'
+  };
+
+  angular.module('app').constant('storageConstant', storageConstant);
+
+}());

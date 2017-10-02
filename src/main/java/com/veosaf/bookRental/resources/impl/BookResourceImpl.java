@@ -6,11 +6,14 @@ import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.stereotype.Component;
+
 import com.veosaf.bookRental.dto.BookDto;
 import com.veosaf.bookRental.models.Book;
 import com.veosaf.bookRental.resources.BookResource;
 import com.veosaf.bookRental.services.BookService;
 
+@Component
 public class BookResourceImpl implements BookResource {
 
 	@Inject
@@ -19,6 +22,12 @@ public class BookResourceImpl implements BookResource {
 	@Override
 	public Response findAll() {
 		List<BookDto> booksDto = bookBusinessService.findAllBooksDto();
+		return Response.ok(booksDto).build();
+	}
+
+	@Override
+	public Response findAllInStock() {
+		List<BookDto> booksDto = bookBusinessService.findAllInStockBooksDto();
 		return Response.ok(booksDto).build();
 	}
 

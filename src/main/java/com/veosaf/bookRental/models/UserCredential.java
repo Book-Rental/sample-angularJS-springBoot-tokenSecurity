@@ -31,7 +31,7 @@ public class UserCredential implements java.io.Serializable {
 	@PrimaryKeyJoinColumn
 	private User user;
 
-	@Column(name = "USERNAME", length = 45)
+	@Column(name = "USERNAME", unique = true, length = 45)
 	private String username;
 
 	@Column(name = "PASSWORD", length = 45)

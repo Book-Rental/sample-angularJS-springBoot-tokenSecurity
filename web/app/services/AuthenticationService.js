@@ -1,13 +1,12 @@
-'use strict';
+(function() {
 
-app.service('authenticationService', ['$rootScope', '$http', '$q', 'base64Service', //
-  'storageService', 'storageConstant', 'propertiesConstant', // 
-  function($rootScope, $http, $q, base64Service, storageService, storageConstant, propertiesConstant) {
+  var authenticationService = function($rootScope, $http, $q, base64Service, storageService, storageConstant,
+    propertiesConstant) {
 
     var login = function(credentials) {
       var d = $q.defer();
       $http.defaults.headers.common.Authorization = 'Basic ' +
-      base64Service.encode(credentials.login + ':' + credentials.password);
+        base64Service.encode(credentials.login + ':' + credentials.password);
       var params = {login: credentials.login, password: credentials.password};
       $http.post(propertiesConstant.API_URL + 'auth/login', params)
         .success(function(response) {
@@ -40,4 +39,13 @@ app.service('authenticationService', ['$rootScope', '$http', '$q', 'base64Servic
       login: login,
       logout: logout
     };
-  }]);
+  };
+
+
+  authenticationService.$inject = ['$rootScope', '$http', '$q', 'base64Service', //
+    'storageService', 'storageConstant', 'propertiesConstant'];
+
+  angular.module('app').service('authenticationService', authenticationService);
+
+}());
+

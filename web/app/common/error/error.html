@@ -5,6 +5,11 @@
     <div ng-switch-when="401">
         <h1>Access Denied</h1>
     </div>
+    <div ng-switch-when="500">
+        <div class="alert alert-danger">
+            <strong>Error!</strong> A problem has been occurred. Please contact your administrator!
+        </div>
+    </div>
     <div ng-switch-default>
         <div class="col-md-10 col-md-offset-1 pull-right">
             <img class="img-error" src="/images/page_not_found.png">

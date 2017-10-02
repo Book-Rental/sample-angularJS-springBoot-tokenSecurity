@@ -1,13 +1,13 @@
-'use strict';
-app.config(['$routeProvider', function($routeProvider) {
-  $routeProvider
-    .when("/login", {
-      templateUrl: "common/login/login.html"
-    });
-}]);
-app.controller('LoginController', ['$location', '$rootScope', '$scope', //
-  'UserService', '$cookieStore', '$localStorage', '$route', //
-  function($location, $rootScope, $scope, UserService, $cookieStore, $localStorage, $route) {
+(function() {
+
+  angular.module('app').config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+      .when("/login", {
+        templateUrl: "common/login/login.html"
+      });
+  }]);
+
+  var LoginController = function($location, $rootScope, $scope, UserService, $cookieStore, $localStorage, $route) {
 
     $scope.credentials = {};
     $scope.login = function() {
@@ -30,4 +30,13 @@ app.controller('LoginController', ['$location', '$rootScope', '$scope', //
       */
       });
     };
-  }]);
+
+  };
+
+  LoginController.$inject = ['$location', '$rootScope', '$scope', //
+    'UserService', '$cookieStore', '$localStorage', '$route'];
+
+  angular.module('app').controller('LoginController', LoginController);
+
+}());
+

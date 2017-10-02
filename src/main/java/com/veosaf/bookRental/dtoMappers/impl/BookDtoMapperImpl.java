@@ -18,6 +18,7 @@ public class BookDtoMapperImpl implements BookDtoMapper {
 		if (book != null) {
 			bookDto = new BookDto();
 			bookDto.setId(book.getId());
+			bookDto.setStockQuantity(book.getStockQuantity());
 			bookDto.setTitle(book.getTitle());
 			bookDto.setAuthor(book.getAuthor());
 			bookDto.setPublicationDate(book.getPublicationDate());
@@ -41,6 +42,7 @@ public class BookDtoMapperImpl implements BookDtoMapper {
 		}
 		Book book = new Book();
 		book.setTitle(bookDto.getTitle());
+		book.setStockQuantity(bookDto.getStockQuantity());
 		book.setAuthor(bookDto.getAuthor());
 		book.setId(bookDto.getId());
 		book.setPublicationDate(bookDto.getPublicationDate());

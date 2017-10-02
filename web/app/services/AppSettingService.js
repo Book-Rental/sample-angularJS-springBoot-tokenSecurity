@@ -1,12 +1,19 @@
-'use strict';
+(function() {
 
-app.service('AppSettingService', ['$http', 'propertiesConstant', function($http, propertiesConstant) {
+  var AppSettingService = function($http, propertiesConstant) {
+    var getAppSettingValue = function(name) {
+      return $http.get(propertiesConstant.API_URL + 'rest/appsetting/' + name);
+    };
 
-  var getAppSettingValue = function(name) {
-    return $http.get(propertiesConstant.API_URL + 'rest/appsetting/' + name);
+    return {
+      getAppSettingValue: getAppSettingValue
+    };
   };
 
-  return {
-    getAppSettingValue: getAppSettingValue
-  };
-}]);
+
+  AppSettingService.$inject = ['$http', 'propertiesConstant'];
+
+  angular.module('app').service('AppSettingService', AppSettingService);
+
+}());
+

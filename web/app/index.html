@@ -20,7 +20,7 @@
 		<!-- Main -->
 		<div class="container" style="padding-top: 130px;">
 			<div ng-include="'common/error/error.html'" ng-if="error"></div>
-			<div ng-view></div>
+			<div ng-view ng-if="!error"></div>
 		</div>
 		<!--/main-->
 

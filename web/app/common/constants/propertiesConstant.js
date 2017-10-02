@@ -1,5 +1,10 @@
-'use strict';
+(function() {
 
-app.constant('propertiesConstant', {
-  API_URL: 'http://localhost:8080/'
-});
+  var propertiesConstant = {
+    API_URL: 'http://localhost:8080/'
+  };
+
+  angular.module('app').constant('propertiesConstant', propertiesConstant);
+
+}());
+

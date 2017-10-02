@@ -1,5 +1,7 @@
 package com.veosaf.bookRental.resources.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
@@ -17,6 +19,12 @@ public class UserResourceImpl implements UserResource {
 
 		UserDto userDto = userService.getByCredentials(username, password);
 		return Response.ok(userDto).build();
+	}
+
+	@Override
+	public Response findAll() {
+		List<UserDto> usersDto = userService.findAllUsersDto();
+		return Response.ok(usersDto).build();
 	}
 
 }

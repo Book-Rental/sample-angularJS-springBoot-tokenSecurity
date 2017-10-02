@@ -1,30 +1,42 @@
-'use strict';
+(function() {
 
-app.service('UserService', ['propertiesConstant', '$http', function(propertiesConstant,
-$http) {
+  var UserService = function(propertiesConstant, $http) {
 
-  var login = function(credentials) {
-    var url = propertiesConstant.API_URL + 'rest/authentication/login';
-    return $http({
-      method: 'POST',
-      url: url,
-      headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-      data: credentials
-    });
+    var login = function(credentials) {
+      var url = propertiesConstant.API_URL + 'rest/authentication/login';
+      return $http({
+        method: 'POST',
+        url: url,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+        data: credentials
+      });
+    };
+
+    var get = function() {
+      return $http.get(propertiesConstant.API_URL + 'rest/authentication/current');
+    };
+
+    var getAllUsers = function() {
+      return $http.get(propertiesConstant.API_URL + 'rest/user');
+    };
+
+    var logout = function() {
+      var url = propertiesConstant.API_URL + 'rest/authentication/logout';
+      return $http.get(url);
+    };
+
+    return {
+      login: login,
+      get: get,
+      logout: logout,
+      getAllUsers: getAllUsers
+    };
+
   };
 
-  var get = function() {
-    return $http.get(propertiesConstant.API_URL + 'rest/authentication/current');
-  };
+  UserService.$inject = ['propertiesConstant', '$http'];
 
-  var logout = function() {
-    var url = propertiesConstant.API_URL + 'rest/authentication/logout';
-    return $http.get(url);
-  };
+  angular.module('app').service('UserService', UserService);
 
-  return {
-    login: login,
-    get: get,
-    logout: logout
-  };
-}]);
+}());
+

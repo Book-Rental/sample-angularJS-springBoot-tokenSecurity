@@ -1,12 +1,20 @@
-app.config(['$routeProvider', function($routeProvider) {
-  $routeProvider
-    .when("/", {
-      templateUrl: "features/home/home.html"
-    });
-}]);
 
-var HomeController = function() {
 
-};
+(function() {
 
-app.controller('HomeController', HomeController);
+  angular.module('app').config(['$routeProvider', function($routeProvider) {
+    $routeProvider
+      .when("/", {
+        templateUrl: "features/home/home.html"
+      });
+  }]);
+
+  var HomeController = function() {
+
+  };
+
+  angular.module('app').controller('HomeController', HomeController);
+
+}());
+
+

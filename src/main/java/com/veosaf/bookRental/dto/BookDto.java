@@ -14,6 +14,8 @@ public class BookDto implements Serializable {
 
 	private String title;
 
+	private Long stockQuantity;
+
 	private String author;
 
 	private Date publicationDate;
@@ -48,6 +50,14 @@ public class BookDto implements Serializable {
 
 	public void setPublicationDate(Date publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+
+	public Long getStockQuantity() {
+		return stockQuantity;
+	}
+
+	public void setStockQuantity(Long stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 
 }

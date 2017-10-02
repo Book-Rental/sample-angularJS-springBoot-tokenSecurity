@@ -37,6 +37,9 @@ public class Book implements java.io.Serializable {
 	@Column(name = "PUBLICATION_DATE", length = 0)
 	private Date publicationDate;
 
+	@Column(name = "STOCK_QUANTITY")
+	private Long stockQuantity;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
 	private Set<Rental> rentals = new HashSet<Rental>(0);
 
@@ -81,6 +84,14 @@ public class Book implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getStockQuantity() {
+		return stockQuantity;
+	}
+
+	public void setStockQuantity(Long stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 
 }

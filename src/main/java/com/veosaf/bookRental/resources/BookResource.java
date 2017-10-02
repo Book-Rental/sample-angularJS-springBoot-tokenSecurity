@@ -19,6 +19,11 @@ public interface BookResource {
 	Response findAll();
 
 	@GET
+	@Path("/instock")
+	@Produces(MediaType.APPLICATION_JSON)
+	Response findAllInStock();
+
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	Response findById(@PathParam("id") Long id);

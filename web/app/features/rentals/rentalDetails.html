@@ -1,23 +1,22 @@
-<div ng-controller="BookDetailsController as BookDetailsCtrl">
+<div ng-controller="RentalDetailsController as RentalDetailsCtrl">
 
-    <form ng-if="mode=='edit' || mode=='new'" ng-submit="saveBook()">
+    <form ng-if="mode=='edit' || mode=='new'" ng-submit="saveRental()">
 
 
         <div class="row">
             <div class="pull-left" ng-if="mode=='edit'">
-                <h4>Edit Book ID#{{book.id}}</h4>
+                <h4>Edit Rental ID#{{rental.id}}</h4>
             </div>
 
             <div class="pull-left" ng-if="mode=='new'">
-                <h4>New Book</h4>
+                <h4>New Rental</h4>
             </div>
 
             <div class="pull-right">
                 <button class="btn btn-default btn-sm" type="button" ng-click="back()">
                             <span class="fa fa-reply"></span>  Back
                 </button>
-                <button class="btn btn-default btn-sm" Style="padding-right:10px" type="button" ng-click="cancel()"
-                ng-if="mode=='edit'">
+                <button class="btn btn-default btn-sm" Style="padding-right:10px" type="button" ng-click="cancel()" ng-if="mode=='edit'">
                         Cancel
                 </button>
                 <button class="btn btn-default btn-sm" Style="padding-right:10px" type="button" ng-click="reset()">
@@ -33,25 +32,28 @@
 
         <div class="row">
             <div class="form-group required col col-md-6" ng-class="{'has-error': errors.Name }">
-                <label class="control-label col-md-4" for="title">Title</label>
+                <label class="control-label col-md-4" for="usersSelect"> Renter </label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="title" placeholder="Enter title" ng-model="book.title" ng-required="true" autocomplete="off">
+                    <select class="form-control" name="usersSelect" id="usersSelect" ng-model="rental.user" ng-required="true">
+                        <option ng-repeat="user in users" value="{{user}}">{{user.firstName}}</option>
+                    </select>
                 </div>
             </div>
-            <div class="form-group required col col-md-6">
-                <label class="control-label col-md-4" for="author">Author</label>
+            <div class="form-group required col col-md-6" ng-class="{'has-error': errors.Name }">
+                <label class="control-label col-md-4" for="booksSelect"> Book </label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="author" placeholder="Enter author" ng-model="book.author" autocomplete="off"
-                        ng-required="true">
+                    <select class="form-control" name="booksSelect" id="booksSelect" ng-model="rental.book" ng-required="true">
+                            <option ng-repeat="book in books" value="{{book}}">{{book.title}}</option>
+                        </select>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group required col col-md-6">
-                <label class="control-label col-md-4" for="pubDate">Publication Date</label>
+                <label class="control-label col-md-4" for="startDate">Start Date</label>
                 <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
                     <div>
-                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate" placeholder="Enter Publication Date"
+                        <input id="startDate" type="text" class="form-control" ng-model="rental.startDate" placeholder="Enter Start Date"
                             autocomplete="off" ng-required="true">
                     </div>
                     <div class="input-group-addon">
@@ -60,10 +62,29 @@
                 </div>
             </div>
             <div class="form-group required col col-md-6">
-                <label class="control-label col-md-4" for="stockQuantity">Stock Quantity</label>
-                <div class="col-md-8">
-                    <input type="number" class="form-control" id="stockQuantity" placeholder="Enter stock quantity" 
-                    ng-model="book.stockQuantity" autocomplete="off" ng-required="true">
+                <label class="control-label col-md-4" for="endDate">End Date</label>
+                <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    <div>
+                        <input id="endDate" type="text" class="form-control" ng-model="rental.endDate" placeholder="Enter End Date"
+                            autocomplete="off" ng-required="true">
+                    </div>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group required col col-md-6">
+                <label class="control-label col-md-4" for="effectiveEndDate">Effective End Date</label>
+                <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
+                    <div>
+                        <input id="effectiveEndDate" type="text" class="form-control" ng-model="rental.effectiveEndDate" placeholder="Enter Effective End Date"
+                            autocomplete="off" ng-required="true">
+                    </div>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,15 +95,14 @@
         <div class="row">
 
             <div class="pull-left" ng-if="mode=='view'">
-                <h4>View Book ID#{{book.id}}</h4>
+                <h4>View Rental ID#{{rental.id}}</h4>
             </div>
 
             <div class="pull-right">
                 <button class="btn btn-default btn-sm" type="button" ng-click="back()">
                             <span class="fa fa-reply"></span>  Back
                 </button>
-                <button type="button" class="btn btn-default btn-sm" type="submit" data-toggle="modal" 
-                data-target="#deleteModal" Style="padding-right:10px">
+                <button type="button" class="btn btn-default btn-sm" type="submit" data-toggle="modal" data-target="#deleteModal" Style="padding-right:10px">
                         <span class="glyphicon glyphicon-remove"></span> Remove 
                 </button>
                 <button type="button" class="btn btn-default btn-sm" Style="padding-right:10px" ng-click="edit()">
@@ -97,13 +117,13 @@
             <div class="form-group col col-md-6">
                 <label class="control-label col-md-4" for="title">Title</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="title" ng-model="book.title" autocomplete="off" disabled>
+                    <input type="text" class="form-control" id="title" ng-model="rental.title" autocomplete="off" disabled>
                 </div>
             </div>
             <div class="form-group col col-md-6">
                 <label class="control-label col-md-4" for="author">Author</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="author" ng-model="book.author" autocomplete="off" disabled>
+                    <input type="text" class="form-control" id="author" ng-model="rental.author" autocomplete="off" disabled>
                 </div>
             </div>
         </div>
@@ -112,7 +132,7 @@
                 <label class="control-label col-md-4" for="pubDate">Publication Date</label>
                 <div class="input-group date col col-md-8" data-provide="datepicker" data-date-format="dd/mm/yyyy">
                     <div>
-                        <input id="pubDate" type="text" class="form-control" ng-model="book.publicationDate" autocomplete="off" disabled>
+                        <input id="pubDate" type="text" class="form-control" ng-model="rental.publicationDate" autocomplete="off" disabled>
                     </div>
                     <div class="input-group-addon">
                         <span class="glyphicon glyphicon-th" />
@@ -122,7 +142,7 @@
             <div class="form-group col col-md-6">
                 <label class="control-label col-md-4" for="author">Stock Quantity</label>
                 <div class="col-md-8">
-                    <input type="text" class="form-control" id="author" ng-model="book.stockQuantity" autocomplete="off" disabled>
+                    <input type="text" class="form-control" id="author" ng-model="rental.stockQuantity" autocomplete="off" disabled>
                 </div>
             </div>
         </div>
@@ -136,10 +156,10 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Book ID# {{book.id}}</h4>
+                    <h4 class="modal-title">Delete rental ID# {{rental.id}}</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sur to delete this book ?</p>
+                    <p>Are you sur to delete this rental ?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

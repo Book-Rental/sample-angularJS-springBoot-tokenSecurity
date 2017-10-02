@@ -25,6 +25,7 @@ public class JerseyConfig extends ResourceConfig {
 		register(UserResourceImpl.class);
 		register(BookResourceImpl.class);
 		register(AppSettingResourceImpl.class);
+		register(RentalResourceImpl.class);
 
 	}
 

@@ -29,6 +29,12 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	@Transactional
+	public List<BookDto> findAllInStockBooksDto() {
+		return bookDtoMapper.toBooksDto(bookRepository.findAllInStockBooksDto());
+	}
+
+	@Override
+	@Transactional
 	public List<BookDto> findAllBooksDto() {
 		return bookDtoMapper.toBooksDto(bookRepository.findAll());
 	}
@@ -45,13 +51,21 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Book save(BookDto bookDto) {
-		return (bookRepository.save(bookDtoMapper.toBook(bookDto)));
+		return bookRepository.save(bookDtoMapper.toBook(bookDto));
 	}
 
 	@Override
 	@Transactional
 	public void delete(Long id) {
 		bookRepository.delete(id);
+	}
+
+	@Override
+	public Book getBookById(Long id) {
+		if (id == null) {
+			return null;
+		}
+		return bookRepository.getOne(id);
 	}
 
 }
